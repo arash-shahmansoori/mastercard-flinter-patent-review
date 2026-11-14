@@ -1,0 +1,18 @@
+[
+ {
+  "types_m": 200,
+  "networks_n": 10,
+  "patterns_enumerated": 1024,
+  "lps_solved": 1024,
+  "seconds_total": 12.1,
+  "seconds_per_lp": 0.0118
+ },
+ {
+  "types_m": 1000,
+  "networks_n": 10,
+  "patterns_enumerated": 1024,
+  "lps_solved": 1024,
+  "seconds_total": 54.0,
+  "seconds_per_lp": 0.0527
+ }
+]

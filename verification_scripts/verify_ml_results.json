@@ -1,0 +1,185 @@
+{
+ "a_batched_inferred_prevalence": {
+  "point": 0.4995,
+  "range_under_rounding": [
+   0.4969,
+   0.5022
+  ]
+ },
+ "b_prevalence_and_trivial_accuracy": {
+  "Jan-2022": {
+   "illicit_share_%": 10.15,
+   "all_licit_accuracy": 0.8985
+  },
+  "Feb-2022": {
+   "illicit_share_%": 9.57,
+   "all_licit_accuracy": 0.9043
+  },
+  "Mar-2022": {
+   "illicit_share_%": 9.18,
+   "all_licit_accuracy": 0.9082
+  }
+ },
+ "b_fraud_model_consistency_and_burden": {
+  "initial": {
+   "implied_accuracy_on_Mar": 0.9222,
+   "false_flags_per_10k_tx": 43.1,
+   "missed_illicit_per_10k_tx": 734.7,
+   "f1_recomputed": 0.321
+  },
+  "updated": {
+   "implied_accuracy_on_Mar": 0.935,
+   "false_flags_per_10k_tx": 89.5,
+   "missed_illicit_per_10k_tx": 560.2,
+   "f1_recomputed": 0.524
+  }
+ },
+ "b_ratio_to_chainalysis_2022_value_share_0.24%": 38.3,
+ "c_test_set_selection_optimism": [
+  {
+   "test_prevalence": 0.001,
+   "positives_in_test": 1000,
+   "candidates_K": 10,
+   "rho": 0.0,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.317,
+   "optimism_pp": 0.683
+  },
+  {
+   "test_prevalence": 0.001,
+   "positives_in_test": 1000,
+   "candidates_K": 10,
+   "rho": 0.9,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.784,
+   "optimism_pp": 0.216
+  },
+  {
+   "test_prevalence": 0.001,
+   "positives_in_test": 1000,
+   "candidates_K": 100,
+   "rho": 0.0,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 0.89,
+   "optimism_pp": 1.11
+  },
+  {
+   "test_prevalence": 0.001,
+   "positives_in_test": 1000,
+   "candidates_K": 100,
+   "rho": 0.9,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.649,
+   "optimism_pp": 0.351
+  },
+  {
+   "test_prevalence": 0.001,
+   "positives_in_test": 1000,
+   "candidates_K": 1100,
+   "rho": 0.0,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 0.551,
+   "optimism_pp": 1.449
+  },
+  {
+   "test_prevalence": 0.001,
+   "positives_in_test": 1000,
+   "candidates_K": 1100,
+   "rho": 0.9,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.542,
+   "optimism_pp": 0.458
+  },
+  {
+   "test_prevalence": 0.02,
+   "positives_in_test": 20000,
+   "candidates_K": 10,
+   "rho": 0.0,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.848,
+   "optimism_pp": 0.152
+  },
+  {
+   "test_prevalence": 0.02,
+   "positives_in_test": 20000,
+   "candidates_K": 10,
+   "rho": 0.9,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.952,
+   "optimism_pp": 0.048
+  },
+  {
+   "test_prevalence": 0.02,
+   "positives_in_test": 20000,
+   "candidates_K": 100,
+   "rho": 0.0,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.751,
+   "optimism_pp": 0.249
+  },
+  {
+   "test_prevalence": 0.02,
+   "positives_in_test": 20000,
+   "candidates_K": 100,
+   "rho": 0.9,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.921,
+   "optimism_pp": 0.079
+  },
+  {
+   "test_prevalence": 0.02,
+   "positives_in_test": 20000,
+   "candidates_K": 1100,
+   "rho": 0.0,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.677,
+   "optimism_pp": 0.323
+  },
+  {
+   "test_prevalence": 0.02,
+   "positives_in_test": 20000,
+   "candidates_K": 1100,
+   "rho": 0.9,
+   "true_FNR_%": 2.0,
+   "expected_reported_best_FNR_%": 1.898,
+   "optimism_pp": 0.102
+  }
+ ],
+ "d_mdi_vs_permutation": {
+  "prevalence": 0.0748,
+  "features": [
+   {
+    "feature": "n_equal_outputs (signal)",
+    "MDI_share_%": 22.9,
+    "heldout_permutation_dAP": 0.3028
+   },
+   {
+    "feature": "input_output_ratio (weak signal)",
+    "MDI_share_%": 25.7,
+    "heldout_permutation_dAP": 0.0091
+   },
+   {
+    "feature": "block_height (noise)",
+    "MDI_share_%": 25.1,
+    "heldout_permutation_dAP": 0.0064
+   },
+   {
+    "feature": "address_hash_numeric (noise)",
+    "MDI_share_%": 25.3,
+    "heldout_permutation_dAP": 0.0045
+   },
+   {
+    "feature": "binary_flag (noise)",
+    "MDI_share_%": 1.1,
+    "heldout_permutation_dAP": 0.0018
+   }
+  ],
+  "mdi_rank": [
+   "input_output_ratio (weak signal)",
+   "address_hash_numeric (noise)",
+   "block_height (noise)",
+   "n_equal_outputs (signal)",
+   "binary_flag (noise)"
+  ]
+ }
+}

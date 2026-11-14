@@ -1,0 +1,624 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[inline]{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+
+\setlist{itemsep=2pt,topsep=3pt}
+\emergencystretch=2.5em
+\titleformat{\section}{\large\bfseries\color{MidnightBlue}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Technical critique of the Mastercard patent portfolio naming Stephen Patrick Flinter as inventor --- A.~Shahmansoori}
+\rhead{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\hypersetup{pdfauthor={Arash Shahmansoori},pdftitle={A Deep Technical Critique of the Mastercard AI, Blockchain-Forensics and Quantum-Optimisation Patent Portfolio Naming Stephen Patrick Flinter},pdfsubject={Independent technical review}}
+\usepackage{textcomp}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,frame=single,framerule=0.3pt,breaklines=true,keepspaces=true,upquote=true}
+
+\newcommand{\claim}[1]{\noindent\textbf{Claim under review.} \emph{#1}\par\smallskip}
+\newcommand{\sev}[1]{\textsc{\color{BrickRed}[#1]}}
+\newcommand{\req}[1]{\noindent\textbf{What would resolve it.} #1\par}
+\newcommand{\act}[1]{\noindent\textbf{Requested action.} #1\par}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries A Deep Technical Critique of the Mastercard}\\[4pt]
+{\Large\bfseries AI, Blockchain-Forensics and Quantum-Optimisation}\\[2pt]
+{\Large\bfseries Patent Portfolio Naming Stephen Patrick Flinter}\\[6pt]
+{\normalsize 15 patent families (2015--2026) naming Stephen Patrick Flinter as an inventor, with 32 co-inventors;\\ assignee Mastercard International Incorporated}\\[4pt]
+{\large\bfseries Reviewer: Arash Shahmansoori}\\[3pt]
+{\normalsize\itshape Independent reviewer report --- 1 November 2026}
+\end{center}
+
+\vspace{2pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+\section*{Submission metadata}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{>{\bfseries\raggedright\arraybackslash}p{4.3cm}X}
+\toprule
+Documents reviewed & 15 patent families; 33 publications read in full (claims and descriptions); 50+ family members identified (Table~1) \\
+Granted patents & US~12,363,024~B2 \emph{Switching optimization} (App.\ 18/265,954; granted 15 Jul 2025; 19 claims). US~12,718,235~B2 \emph{Transaction analysis and visualisation} (App.\ 18/748,018; granted 25 Aug 2026; 20 claims) \\
+Pending families & 11 families with live US, EP, PCT, CN, JP, KR or AU members; the two granted families also have pending EP and Asian members \\
+Withdrawn or abandoned & US~2021/0019717~A1, US~2017/0178122~A1 (abandoned); GB~2601996~A, GB~2602251~A, GB~2608992~A, GB~2614063~A, EP~3182356~A1 (withdrawn) \\
+Assignee & Mastercard International Incorporated (Purchase, NY); inventors based mainly at the Dublin R\&D lab \\
+Related publication & O'Meara, Taneja, Nicholls, Kothale, Flinter, Jurcut. \emph{JoinDetect}. ACM GoodIT '24, pp.~5--13, DOI 10.1145/3677525.3678633, published online 4 Sep 2024, the day the CoinJoin application was filed \\
+Sources & Google Patents full texts as published or granted; Justia (grant record of US~12,718,235~B2); family and status data from Google Patents/Espacenet; Crossref; the primary literature cited in the References \\
+Code and artefacts & The applicant publishes none. This review re-implements four of the disclosed formulations and releases its scripts (Appendix~A) \\
+Review type & Full technical review of claims, methods and every reported number, with independent numerical verification against the documents' own formulas, examples and appendices \\
+\bottomrule
+\end{tabularx}
+
+\medskip
+\noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{\textbf{Reviewer's final decision: CANCELLATION RECOMMENDED for all claims of both granted patents (US~12,363,024~B2, claims 1--19; US~12,718,235~B2, claims 1--20). STRONG REJECT for all 11 pending families and for the pending foreign members of the granted families.}\\[2pt]
+\textbf{Technical soundness} 1/5 (poor) \quad \textbf{Disclosure quality} 2/5 (fair) \quad \textbf{Novelty and inventive step} 1/5 (poor) \quad \textbf{Reviewer confidence} 5/5 on the technical findings (each was recomputed from the documents' own text), 3/5 on legal outcomes (the reviewer is not a patent attorney).\\[2pt]
+\emph{Rationale.} In the granted quantum patent, the step assigned to the quantum computer is solved exactly by a one-line threshold rule. The disclosed energy function rewards routing to the more expensive network. Claim~12 contradicts the description. The granted blockchain patent claims an extract-transform-load (ETL) routine that Google published as a public dataset and tutorial in 2018. The headline ML results in the fraud and batching applications are artefacts of how their labels are defined. The CoinJoin claims read element-by-element on a 2022 paper that the inventors' own paper cites. The remaining quantum filings recast an LP-solvable assignment, an ill-posed partition problem and a textbook algebraic substitution as quantum inventions. The full rationale is in Section~\ref{sec:decision}.}}
+
+\section*{Scope and method of this review}
+This report reviews the portfolio as a whole and each family in turn. It covers the technical premise (backgrounds and summaries), the methods (every independent claim and the dependent claims that carry technical content), and every quantitative result the documents report: Appendices IV--V of US~2024/0420147~A1, [0097] of US~2024/0420146~A1, [0083] of US~2026/0037961~A1, the worked example of US~2024/0028537~A1 and the formulas of US~12,363,024~B2. Every criticism names the claim, paragraph, table or formula it refers to. Paragraph numbers refer to the US publication unless an EP or WO document is named. Where a statement can be checked against primary sources, it was. Four disclosed formulations were re-implemented and solved with an exact classical solver (HiGHS through SciPy~1.16) on a 2017 laptop CPU (Intel i7-7700HQ). The ML appendices were checked arithmetically.
+
+Legal standards (35~U.S.C. \S\S101, 102, 103, 112; Arts.~52, 54, 56, 83, 84 EPC) are mentioned only to say how the technical facts bear on them. They are the reviewer's opinion, not legal advice. A registered patent practitioner should be consulted before any filing.
+
+\section*{Portfolio inventory and bibliographic corrections}
+\begingroup\small
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.35cm}>{\raggedright\arraybackslash}p{3.4cm}>{\raggedright\arraybackslash}p{5.0cm}>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{3.85cm}}
+\caption{The 15 families reviewed (status as of 1 November 2026).}\\
+\toprule
+\# & Family & Key publications & Status & Co-inventors with Flinter \\
+\midrule\endfirsthead
+\toprule
+\# & Family & Key publications & Status & Co-inventors with Flinter \\
+\midrule\endhead
+1 & Switching optimization (quantum payment routing) & US~12,363,024~B2; US~2024/0039830~A1; WO~2022/125658~A1; EP~4260250~A1/A4; GB~2601996~A & US granted; EP pending; GB withdrawn & N.~Mariella \\
+2 & Transaction analysis and visualisation & US~12,718,235~B2; US~2024/0420131~A1; EP~4481653~A1; WO~2024/263366~A1; CN/JP/KR & US granted; others pending & M.~Taneja, J.~Nicholls, J.~Conway, N.~Kothale, S.~Holland, W.~Moran \\
+3 & Predicting whether a transaction \ldots\ is fraudulent & US~2024/0420147~A1; EP~4481655~A1; WO~2024/263365~A1; CN/JP/KR & Pending & As family 2 \\
+4 & Identifying multi-party anonymization (CoinJoin) & US~2026/0065141~A1; WO~2026/054906~A1 & Pending & M.~Taneja, J.\,W.~O'Meara, N.~Kothale \\
+5 & Detecting batched transactions & US~2026/0037961~A1; EP~4687089~A1 & Pending & As family 2, plus F.\,C.~Onwuegbuche, P.~Hauck \\
+6 & Allocation optimisation (quantum offer allocation) & US~2024/0037582~A1; WO~2022/125660~A1; EP~4260246~A1/A4; GB~2602251~A & US, EP pending & N.~Mariella, J.~Conway, Q.~Bragard \\
+7 & Hidden flow discovery (quantum mixer tracing) & US~2024/0028537~A1; EP~4453756~A1; WO~2023/121872~A1; GB~2614063~A & US, EP pending & N.~Mariella \\
+8 & Variable freezing (QUBO reduction) & US~2024/0320295~A1; EP~4367606~A1; WO~2023/282983~A1; GB~2608992~A & US, EP pending & N.~Mariella \\
+9 & Predicting fraudulent transactions & EP~4481654~A1; WO~2024/263363~A1; CN/JP/KR; US~2024/0420146~A1 (Flinter not named) & Pending & As family 2 \\
+10 & Bias in generative AI systems & EP~4651029~A1; WO~2025/240033~A1 & Pending & M.~Taneja \\
+11 & Predicting a level of a time-varying reserve & EP~4617990~A1; WO~2025/193368~A1 & Pending & A.~Singh, Y.\,L.\,N.~Siddhard, D.~Chaurasiya, J.~Conway, M.~Taneja, R.\,J.~Groat, N.~Kothale, D.\,I.~Wild, K.~Grayson \\
+12 & Predicting transactional behavior in a network & US~2023/0297826~A1; EP~4246407~A1; AU~2023201606~A1 & Pending & S.\,J.~Shaju, A.\,K.~Surisetty, A.~Singh, D.~Chaurasiya, Q.~Bragard, A.~Lee, I.-H.~Chuang \\
+13 & Automated development of AI projects & US~2024/0176598~A1; WO~2024/118157~A1 & Pending & J.~Conway, N.\,M.~Tran \\
+14 & Digital media rights via blockchain & US~2021/0019717~A1; WO~2021/011127~A1 & Abandoned & H.~Tang, J.~Pinkham, K.~Ingram, H.~Lysaght \\
+15 & Contactless transaction mesh network & US~2017/0178122~A1; EP~3182356~A1 & Abandoned / withdrawn & M.\,S.\,P.~Mora, R.~Hyland, G.~Forde, A.~Rizzini, A.\,M.~Clyne, S.~Elder \\
+\bottomrule
+\end{longtable}
+\endgroup
+\noindent\textbf{Corrections to commonly circulated summaries of this portfolio.}
+\begin{enumerate*}[label=(\roman*),itemjoin={{; }}]
+\item US~2023/0297826~A1 is not a biometric or facial-token identity filing. It claims an LSTM temporal point process that predicts when an account will next transact (family 12)
+\item the US member of family 9 (US~2024/0420146~A1, App.\ 18/747,982) does not name Flinter, although its EP and PCT counterparts do
+\item the CoinJoin US application was filed on 4 Sep 2024; 31 Jul 2025 is the PCT filing date
+\item families 7, 8, 10, 11 and 13 were missing from those summaries and are added here
+\item the 2022 publication date given for the Ingram/Tang/Pinkham/Lysaght filing could not be verified: the family was published as US~2021/0019717~A1 on 21 Jan 2021 and is abandoned.
+\end{enumerate*}
+Families 14 and 15 are abandoned and are not assessed further.
+
+\section*{Summary of the portfolio's claims}
+The documents make the following central technical assertions:
+\begin{enumerate}[label=(C\arabic*)]
+  \item \emph{US~12,718,235~B2:} unpacking blocks into input/output rows and aggregating them into a ``block analysis table'' makes blockchain analysis and visualisation possible, which ``is not practically achievable from the raw data'' (description, FIG.~7 discussion).
+  \item \emph{US~2024/0420147~A1:} adding information about the transaction that preceded the funds (``neighbouring transaction data'') to an ML model improves fraud prediction. Appendix~V reports recall rising from 0.20 to 0.39 and F1 from 0.32 to 0.53.
+  \item \emph{US~2026/0065141~A1:} engineered features, impurity-based feature selection, class rebalancing and a random forest identify CoinJoin-type ``multi-party anonymization transactions'' (MATs). This is said to overcome ``rule-based and heuristic approaches'' that ``fall short'' ([0001]).
+  \item \emph{US~2026/0037961~A1:} two-stage feature selection and XGBoost detect batched transactions with accuracy 0.9813 and F1 0.9810 ([0083]). ``Blockchain analytics companies and researchers are yet to address this need'' ([0007]).
+  \item \emph{US~12,363,024~B2:} transactions can be allocated to payment networks by a quantum computer, which ``can determine \ldots\ in one computation cycle the optimum solution'' ([0003]). Claim~12 alternates between a quantum-solved binary sub-problem and a convex sub-problem.
+  \item \emph{US~2024/0037582~A1:} card-linked offers are allocated optimally by a quantum computer for ``millions'' of cardholders and ``hundreds or thousands'' of offers ([0057]).
+  \item \emph{US~2024/0028537~A1:} a QUBO solved by a quantum computer yields a probability matrix linking a mixer's inputs to its outputs (claims 1--3).
+  \item \emph{US~2024/0320295~A1:} ``freezing'' variables yields an equivalent QUBO that needs fewer qubits (claim~1).
+  \item \emph{EP~4651029~A1:} embedding-level bias tests at the input and output of a generative model, with mitigation, produce a de-biased ``use case model'' (claim~1).
+  \item \emph{EP~4617990~A1, US~2023/0297826~A1, US~2024/0176598~A1:} an LSTM reserve forecaster, a neural temporal point process for transaction timing, and an MLOps platform are technical inventions.
+\end{enumerate}
+
+\section*{Overall assessment (TL;DR)}
+Some underlying problems are real and worth solving: detecting exchange batching, tracing mixer flows and routing payments cost-effectively. The quantum filings are also explicit enough about their formulations to be checked, which deserves credit. The checks, however, do not support the claims. Several are contradicted by the documents' own formulas, examples or appendices. The most consequential problems are:
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item \textbf{The granted quantum patent's mathematics fails on its own terms (US~12,363,024~B2).}
+  \begin{itemize}
+    \item With the routing fixed, the binary sub-problem that claim~12(b) assigns to a quantum computer has a closed-form solution: activate a discount if and only if its volume threshold is met. Exhaustive solution agreed with this rule in 5,496 of 5,496 iterations.
+    \item The disclosed energy multiplies the discount by the constraint penalty $P$ ([0099]). For any $P>5/3$ in the reviewer's example, it selects a network costing 20\% more.
+    \item The ``convex'' sub-problem is concave once the fractionality penalty $\beta\sum x(1-x)$ of [0113] is included.
+    \item Claim~12(c) recites a quantum computer for a step that [0128] assigns to ``Gurobi or CPlex''.
+    \item Even with a perfect quantum oracle, the claimed alternation misses the global optimum in 19.5--23\% of 200 instances, by up to 24\%. A classical MILP solves 100,010-binary instances to proven optimality on a laptop.
+    \item The decomposition was published by IBM Research (Gambella and Simonetto, arXiv, January 2020) eleven months before the priority date.
+  \end{itemize}
+  \item \textbf{The physics premise is false.} Four filings state that a quantum computer ``can determine \ldots\ in one computation cycle the optimum solution to a given problem''. No known quantum algorithm or device does this for NP-hard optimisation.
+  \item \textbf{The granted blockchain patent claims routine ETL (US~12,718,235~B2).} Claim~1 (block range $\rightarrow$ input/output rows $\rightarrow$ aggregated table) is what Google's public BigQuery Bitcoin dataset and tutorial did in February 2018. BlockSci (2017) and the ETL study by Galici et al.\ (2020), which is in the record, did the same. Claim~6 is distinguished only by a literal table name, \texttt{SCHEMA.DATASET.btc\_block\_stg}.
+  \item \textbf{The fraud model's ``improvement'' is leakage by construction (US~2024/0420147~A1).}
+  \begin{itemize}
+    \item The label of a transaction is defined by flagged addresses in the \emph{preceding} transaction ([0091]), and the invention adds that preceding transaction as input. The improved model's recall of 0.39 is below that of the labelling rule itself, which is 1.0.
+    \item An ``all licit'' classifier already scores 0.908 accuracy on the test month.
+    \item The metrics are attributed both to the test month ([0101]) and to the training months ([0115]).
+    \item The 9.2--10.2\% ``illicit'' prevalence is about 38$\times$ Chainalysis' 0.24\% estimate for 2022. That figure is by value rather than by count, but the gap indicates the label captures broad risk categories rather than fraud.
+    \item Weber et al.\ (2019) published the same insight, that adding one-hop neighbour aggregates raises accuracy.
+  \end{itemize}
+  \item \textbf{The CoinJoin claims are anticipated and overbroad (US~2026/0065141~A1).}
+  \begin{itemize}
+    \item St\"utz et al.\ (ACM AFT 2022) disclose every element of claim~1: engineered features, feature ranking, a balanced subset built from sampled negatives, a random forest and a 70/30 split. They report 99.98\% accuracy. The inventors' own JoinDetect paper cites them.
+    \item Claim~8 drops CoinJoin entirely and reads on almost any imbalanced binary classification pipeline.
+    \item Claim~4 recites impurity-based importance (MDI). In the reviewer's experiment, MDI ranked the strongest real signal 4th of 5, below two pure-noise features.
+    \item Claims 3, 5 and 6 select the final model on the test results themselves.
+  \end{itemize}
+  \item \textbf{The batching label is a definition (US~2026/0037961~A1).} A ``batch'' is ``a transaction containing more than one output'' ([0055]). That includes the canonical payment-plus-change transaction of the Bitcoin whitepaper (\S9). The reported metrics imply an artificially balanced evaluation set (prevalence $0.4995\pm0.003$), and no baseline is given.
+  \item \textbf{The other quantum filings recast easy or ill-posed problems.}
+  \begin{itemize}
+    \item The offer-allocation model is a totally unimodular LP. The LP optimum had zero fractional entries at up to 2.4 million binaries, solved in 71\,s. The stated scale is about $10^9$ binaries against roughly 4,400 qubits on the largest annealer.
+    \item The hidden-flow objective is minimised equally by the uninformative ``single route'' solution: it has 125 degenerate ground states on the patent's own example. Its probability formula contradicts its example, and the problem was solved exactly by the Boltzmann linkability tool (2015--2017).
+    \item ``Variable freezing'' is \texttt{dimod.fix\_variable} (2018).
+  \end{itemize}
+  \item \textbf{The applied-AI filings claim textbook methods without evaluation.} They recite WEAT-style embedding bias tests, an LSTM with sine/cosine features, RMTPP and an MLOps stack. Some claim language is indefinite (``the density function'', ``the offer'' without antecedent basis). In the bias filing, an API-served LLM cannot consume the ``mitigated embeddings'' the claim relies on.
+\end{enumerate}
+\noindent\textbf{Recommendation.} The claims of both granted patents should be cancelled through the available post-grant procedures (Section~\ref{sec:actions}). All pending claims should be rejected, and examiners should be given the prior art and computations collected here.
+
+%==================================================================
+\section{Major issue 1: US~12,363,024~B2 --- the quantum step is computationally vacuous, the energy function is wrong, and claim~12 contradicts the description \sev{critical}}\label{sec:switching}
+\claim{Claim~1: ``expressing by the classical computer in at least one expression to a quantum computer, the plurality of first information, the plurality of second information and the switching characteristic; providing to the quantum computer the at least one expression to determine the allocation \ldots''. Claim~12: ``(b) solving, by a quantum computer, the non-convex sub-problem \ldots\ wherein the continuous variable is fixed; (c) solving, by a quantum computer, the convex sub-problem \ldots\ (d) repeating steps (b) and (c) \ldots\ until a threshold is met''. Claim~14: ``solved according to an \ldots\ ADMM method''. Background [0003]: ``the quantum computer can determine the minimum energy state of the qubits and so determine in one computation cycle the optimum solution to a given problem.''}
+
+\noindent\textbf{The disclosed problem.} Transaction types $s=1,\dots,m$ with predicted volumes $T_s$ are routed to networks $k=1,\dots,n$ with unit costs $c_{s,k}$. Network $k$ grants an all-units discount $d_k$ if its routed volume reaches $V_k$ ([0080]--[0091]). The true cost is
+\[ \textstyle C(x,f)=\sum_k (1-d_k f_k)\sum_s T_s c_{s,k} x_{s,k},\qquad \sum_k x_{s,k}=1,\qquad \sum_s T_s x_{s,k}\ge V_k f_k,\quad f_k\in\{0,1\}. \]
+
+\subsection{The premise in [0003] is physically incorrect}
+Quantum annealing is a heuristic. Its adiabatic run time scales with the inverse square of the minimum spectral gap, which can close exponentially for hard instances (Albash and Lidar, 2018; Altshuler, Krovi and Roland, 2010). Benchmarks have not shown a general quantum speed-up for optimisation (R{\o}nnow et al., 2014). The same sentence appears in all four quantum filings of the portfolio (Issue~14). A specification that rests its motivation on a false description of the claimed machine gives no technical reason to expect the claimed benefit (``fast optimisation enabling \ldots\ real-time systems'', [0077]).
+
+\subsection{The literal energy function rewards expensive routing}
+The conditional discount term added to the cost is $-f_k\,P\,d_k\sum_s T_s c_{s,k}x_{s,k}$ ([0064], [0099]). WO~2022/125658 [0064] defines $P$ as the ``penalty determined such that the conditional discount constraints have priority over cost minimisation''. With the discount active, the energy coefficient of network $k$ is $T_s c_{s,k}(1-Pd_k)$. Once $Pd_k>1$ this is negative and \emph{decreases} as the unit cost $c_{s,k}$ rises, so the minimiser prefers the most expensive network. A one-type example is enough: network~1 costs 1.00 per unit with no discount, network~2 costs 1.50 with a 20\% discount, the volume is 1,000 and the threshold is met. The true optimum is network~1 (cost 1,000 against 1,200). The literal energy selects network~2 for every $P>5/3$: $P=3$ gives energy 600, and $P=10$ gives $-1{,}500$. The disclosed objective therefore does not encode the problem it claims to solve.
+
+\subsection{The step claimed for the quantum computer has a closed-form solution}
+With the continuous routing $x$ fixed (claim~12(b)), the cost is $\sum_k (1-d_kf_k)C_k(x)$ subject to $f_k\le \mathbb{1}[\mathrm{vol}_k(x)\ge V_k]$. The problem is separable across networks, and its minimiser is $f_k=\mathbb{1}[\mathrm{vol}_k(x)\ge V_k]$. That is an $O(n)$ threshold test. The ADMM objective of [0113] gives the same rule: its reward $-\max\{\alpha,\epsilon\}\sum_k f_k$ and its discount-amount constraint $\sum_k D_k(x)f_k\ge t$ both favour activating every eligible discount. Solving the binary step by exhaustive enumeration agreed with the threshold rule in \textbf{5,496 of 5,496} iterations, across all runs of the experiment in \S1.5. Nothing in this step calls for a quantum computer, or for any optimiser at all.
+
+\subsection{The ``convex sub-problem'' is not convex, and claim~12(c) contradicts [0128]}
+The disclosed objective adds a fractionality penalty $+\beta\sum_{s,k}x_{s,k}(1-x_{s,k})$ ([0113], [0116]). Its second derivative is $-2\beta<0$. With $f$ fixed, the remaining problem is a concave minimisation over a polytope, which is NP-hard in general. It is not the ``convex sub-problem'' recited in claim~12. Claim~15's ``sequential convex programming'' tacitly acknowledges this. Claim~12(c) also requires that sub-problem to be solved ``by a quantum computer''. The description says the opposite: ``this convex sub-problem is configured to be solved on a classical solver, such as Gurobi or CPlex'' ([0128]). No passage explains how a quantum computer would solve a continuous constrained program. Practical quantum interior-point methods would need fault-tolerant hardware and QRAM (Kerenidis and Prakash, 2020). Claim~12(c) as granted is therefore neither described nor enabled for its full scope (\S112(a); \emph{Amgen v.\ Sanofi}, 2023). Its scope is also unclear in light of [0128] (\S112(b)).
+
+\subsection{With a perfect quantum oracle, the claimed alternation is still a weak heuristic}
+Claim~12 was implemented with \emph{exact} sub-solvers. The binary step was solved by exhaustive enumeration, which bounds what any quantum solver can return. The continuous step was solved as an LP (HiGHS) with the discount-volume constraint enforced, and the steps were alternated until the solution stopped changing. The test set was 200 random instances ($m\in[5,39]$, $n\in[2,7]$, discounts 5--30\%, thresholds 15--60\% of total volume), each compared with the exact MILP optimum:
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Claim-12 alternation & Instances not optimal & Mean gap & 90th pct.\ gap & Max gap \\
+\midrule
+2 initialisations (cheapest, uniform) & 23.0\% & 1.60\% & 6.25\% & 24.4\% \\
+12 initialisations (+10 random) & 19.5\% & 1.35\% & 3.10\% & 23.6\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+The failure has a structural cause. Once $f_k=0$, the continuous step has no incentive to move volume into network~$k$. Once volume is absent, the binary step sets $f_k=0$ again. Discounts that are not active at the start are seldom discovered.
+
+\noindent\textbf{Exact classical solutions.}
+\begin{itemize}
+  \item \emph{Integer routing} ([0087]--[0091]): the MILP was solved to proven optimality in 0.004\,s ($10\times3$), 0.05\,s ($100\times5$), 120\,s ($1{,}000\times10$; 20,010 binaries) and 402\,s ($5{,}000\times10$; 100,010 binaries).
+  \item \emph{Fractional routing} (claim~12): enumerating all $2^{10}$ discount patterns and solving one LP per pattern is an exact algorithm. It took 54\,s at $m=1{,}000$, serially.
+\end{itemize}
+
+\subsection{The literal QUBO cannot be run on existing annealers}
+Encoding the one-hot routing and the volume inequality as QUBO penalties needs $\lceil\log_2(\sum_sT_s+1)\rceil$ slack bits per network. The ``binary slack variable'' $f_k$ of [0095] is not a slack variable. Each network's penalty forms a dense clique:
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+Types $m$ & Networks $n$ & Slack bits/network & Logical variables & Clique per network & Logical couplers \\
+\midrule
+100 & 5 & 20 & 605 & 121 & 37,300 \\
+1,000 & 10 & 24 & 10,250 & 1,025 & 5,293,000 \\
+10,000 & 10 & 27 & 100,280 & 10,028 & $5.0\times10^{8}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+D-Wave's Advantage2 (generally available since 20 May 2025) has 4,400+ qubits, 40,000+ couplers and 20-way connectivity. Its Zephyr $Z_m$ topology embeds cliques of at most $16m-8$ variables, about 184 for $Z_{12}$ at full yield. The penalty terms also scale as $T_sT_{s'}$, and the slack bits as powers of two up to $\sum_sT_s$. The coefficients therefore span at least eight orders of magnitude, far beyond what analogue hardware can represent. The formulation also routes \emph{predicted} period volumes ([0106]). It is a planning problem, not a per-transaction decision, so the ``real-time'' assertion of [0077] is both unnecessary and unsupported.
+
+\subsection{Prior art that the record does not contain}
+The cited art (Cashedge, CableLabs, Jet.com, Accenture, Amazon, Zapata, Red Hat) is generic. The following pre-date the 9 Dec 2020 priority date:
+\begin{itemize}
+  \item \textbf{Gambella and Simonetto} (IBM Research -- Ireland), \emph{Multi-block ADMM Heuristics for Mixed-Binary Optimization on Classical and Quantum Computers}, arXiv:2001.02069 (7 Jan 2020); IEEE Trans.\ Quantum Eng.\ 1 (2020). ADMM splits a mixed-binary problem into ``a binary unconstrained problem (that can be solved with quantum algorithms), and continuous constrained convex subproblems (that can be solved cheaply with classical optimization solvers)''. This is claims 12--16 with the convex step solved classically, as [0128] itself prescribes. It was later implemented in IBM's open-source Qiskit Optimization as \texttt{ADMMOptimizer}.
+  \item \textbf{QUBO formulation with slack variables}: Glover, Kochenberger and Du (2019), cited in [0125] itself; Lucas (2014).
+  \item \textbf{Hybrid quantum--classical routing with a classical pre- and post-processor}: Neukart et al.\ (2017), traffic-flow optimisation on a D-Wave annealer.
+  \item \textbf{Volume-discount allocation as a MILP}: Sadrian and Yoon (1994), \emph{A procurement decision support system in business volume discount environments}, \emph{Operations Research} 42(1).
+  \item \textbf{Payment routing across networks as an economic practice}: merchant routing choice for debit transactions under Regulation~II (12~C.F.R.~\S235.7, 2011).
+\end{itemize}
+\noindent\textbf{Eligibility.} Claims~1 and~11 are result-oriented. They recite ``expressing \ldots\ to a quantum computer'' an optimisation of a pricing problem, without any specific encoding, algorithm or hardware improvement. That is a mathematical concept applied to a fundamental economic practice (cf.\ \emph{Alice}, 2014). Before the EPO the same facts point to a lack of inventive step under the COMVIK approach: the business-motivated cost model contributes no technical effect, and the computing means are generic.
+
+\act{Because the 9-month post-grant review window closed on 15 April 2026, the procedures still available are \emph{ex parte} reexamination (35~U.S.C.~\S302) or \emph{inter partes} review (\S311, on \S\S102/103 grounds). Either should rely on Gambella and Simonetto (2020), Glover et al.\ (2019), Lucas (2014), Neukart et al.\ (2017) and Sadrian and Yoon (1994), together with the computations above. The \S101 and \S112 defects (\S1.4) can be raised in any enforcement proceeding. Third-party observations should be filed against EP~4260250.}
+
+%==================================================================
+\section{Major issue 2: US~12,718,235~B2 --- the claims cover routine blockchain ETL published years before the priority date \sev{critical}}\label{sec:txviz}
+\claim{Claim~1: ``determining a range of blocks in the blockchain; unpacking each block \ldots\ into a corresponding table comprising one or more rows of input and output data for each of the transactions \ldots; and for the range of blocks \ldots\ aggregating entity information and aggregating transaction information into a block analysis table.'' Claim~6: ``using SCHEMA.DATASET.btc\_block\_stg table as a primary table''. Description: ``it becomes easy to analyse and visualize transactions across large ranges of the blockchain --- this is not practically achievable from the raw data.''}
+
+\noindent\textbf{Analysis.}
+\begin{itemize}
+  \item \textbf{Every element of claim~1 was public before 19 Jun 2023.} On 8 Feb 2018, Google published the full Bitcoin blockchain as a BigQuery public dataset, with nested \texttt{inputs} and \texttt{outputs} records per transaction. Its blog post (Day and Bookman) describes a system that ``stores the data to BigQuery and de-normalizes it to make exploration easier''. Appendix~B shows the claimed method as a single standard SQL query over that dataset (\texttt{UNNEST} of inputs and outputs, then \texttt{GROUP BY}). BlockSci (Kalodner et al., arXiv 2017; USENIX Security 2020) parses blocks into input/output tables for analysis in Jupyter. GraphSense (Haslhofer et al., 2021) aggregates transactions and address clusters (``entities'') for display. Galici et al.\ (2020), \emph{Applying the ETL Process to Blockchain Data}, is cited on the face of the patent from the European search report.
+  \item \textbf{The specification concedes that the means are conventional.} It cites Google Cloud, BigQuery and Jupyter Notebook as ``well-known resources''. It says the software ``may be implemented \ldots\ as a Python-based script using standard data science libraries familiar to the person skilled in the art'': pandas, Matplotlib, Seaborn, Plotly, NumPy and SciPy. The labels come from CipherTrace. The stated advantage, a smaller dataset after aggregation, is the generic benefit of any \texttt{GROUP BY}.
+  \item \textbf{The dependent claims add no technical content.}
+  \begin{itemize}
+    \item Claim~2 (merge into a data frame), claim~3 (``scripts or functions''), claim~5 (``outer joins'') and claim~8 (``statistical aggregation of values of each field'') are routine SQL or pandas operations.
+    \item Claim~6 is distinguished only by an arbitrary identifier, \texttt{SCHEMA.DATASET.btc\_block\_stg}. A name has no technical effect, cannot confer novelty, and can be avoided by renaming a table.
+    \item Claim~9 labels transactions by known-bad addressees, which is standard exposure screening.
+    \item Claims 11--12 (``analysing'' and ``displaying'') are the collect--analyse--display pattern held abstract in \emph{Electric Power Group v.\ Alstom} (Fed.\ Cir.\ 2016).
+  \end{itemize}
+  \item \textbf{The factual premise is contradicted.} Google's tutorial and the BlockSci and GraphSense platforms were built to make block-range analysis practical, years earlier. The specification's assertion that this ``is not practically achievable from the raw data'' is incorrect.
+\end{itemize}
+\act{Petition for \emph{post-grant review} (35~U.S.C.~\S321) before \textbf{25 May 2027}, nine months after grant, on \S\S101, 102 and 103 grounds and on \S112(b) for claim~6. Rely on the 2018 BigQuery dataset and tutorial, BlockSci and GraphSense. Galici et al.\ is already of record, so new art and the \S101 analysis carry the weight. File third-party observations against EP~4481653 and inform the pending CN, JP and KR members.}
+
+%==================================================================
+\section{Major issue 3: US~2024/0420147~A1 --- the reported improvement is target leakage by construction \sev{critical}}\label{sec:fraud}
+\claim{Claim~1: ``obtaining transaction data for a first transaction of first funds \ldots\ wherein the transaction data further comprises information related to a second transaction of the first funds that preceded the first transaction; labelling \ldots; and using the transaction data and the label as training data''. Claim~4: ``the information related to the second transaction \ldots\ indicates whether the second transaction involved at least one entity involved in fraudulent activity''. Appendix~V: accuracy 0.92$\rightarrow$0.93, precision 0.81$\rightarrow$0.80, recall 0.20$\rightarrow$0.39, F1 0.32$\rightarrow$0.53.}
+
+\noindent\textbf{How the label is built.} ``A binary flag is set so as to indicate the first transaction is fraudulent if any of the addresses in the one or more input and output rows of transaction data for the \emph{second} transaction are associated with the darkmarket, a high risk exchange, criminal activity, ransomware or sanctioned entities'' ([0091]; flags from CipherTrace, [0092]). The target is therefore a deterministic function of the identity of the preceding transaction's addresses. Claim~1 adds that same preceding transaction to the input.
+
+\noindent\textbf{Consequences.}
+\begin{itemize}
+  \item \textbf{The model approximates a lookup it could simply perform.} Claims~4 and~17 feed the label-defining flag in as a feature, which is direct leakage (Kaufman et al., 2012; Kapoor and Narayanan, 2023). In the experiment the flags were withheld from the inputs ([0109]). The model was then asked to reproduce an attribution lookup from neighbour features, including address-state balances, deposit counts and spend counts, which fingerprint large services. The label rule has precision and recall of 1.0 by definition, and it can be computed at inference wherever the attribution source exists. A model with recall 0.39 is strictly dominated by the rule that defines its target. Because the split is temporal but not entity-disjoint (Jan--Feb $\rightarrow$ Mar~2022), the same flagged services appear on both sides. The gain is consistent with memorising entities rather than generalising to new fraud.
+  \item \textbf{The evaluation is attributed to two different datasets.} [0101] states that ``the test/validation dataset was transactions from March 2022''. [0115] states that Appendix~V shows ``the accuracy of the LGBM on the January 2022 and February 2022 data'', which are the training months.
+  \item \textbf{Accuracy is barely above a trivial baseline.} Predicting ``licit'' for everything scores 0.898 (Jan), 0.904 (Feb) and 0.908 (Mar). With March prevalence (9.18\%), Appendix~V implies accuracies of 0.922 and 0.935, which matches the reported 0.92 and 0.93. The ``improvement'' is 1.4 to 2.7 points over doing nothing.
+  \item \textbf{Operating cost.} At March prevalence, adding neighbour features doubles false flags from 43 to 90 per 10,000 transactions. The model still misses 560 of the 918 labelled transactions in every 10,000. The description proposes to ``freeze'' such transactions ([0117], [0131]). An exchange cannot freeze an on-chain transaction that it does not control; it can only withhold credit.
+  \item \textbf{Construct validity.} 9.18--10.15\% of \emph{all} Bitcoin transactions in Q1~2022 are labelled illicit (Appendix~IV). That is about 38$\times$ Chainalysis' estimate that 0.24\% of 2022 on-chain value was illicit. The two figures measure different things (count against value), but the gap is too large for the label to be measuring fraud. It is better described as exposure to broad risk categories, including ``high risk exchange'' (and, in the sibling text, ``gambling'' and ``mixer'').
+  \item \textbf{The claimed insight was published in 2019.} The Elliptic dataset paper (Weber et al., KDD '19 workshop) adds 72 ``aggregated features \ldots\ obtained by aggregating transaction information one-hop backward/forward from the center node''. It reports that ``for all the three evaluated models, the aggregated information led to higher accuracy''. That anticipates claims 1--3 and~12. Taint-based risk scoring from preceding transactions (M\"oser, B\"ohme and Breuker, 2014) anticipates claims~4 and~17.
+\end{itemize}
+\req{An entity-disjoint and time-disjoint evaluation, with no attribution-derived inputs. A comparison against the labelling rule itself and against a taint baseline. PR-AUC with confidence intervals at deployment prevalence. A label set restricted to adjudicated fraud rather than risk categories.}
+
+%==================================================================
+\section{Major issue 4: US~2026/0065141~A1 --- the CoinJoin classifier claims are anticipated, overbroad, and recite biased selection \sev{critical}}\label{sec:mat}
+\claim{Claim~1: ``identify standard data features in labeled training data; generate engineered data features \ldots; select training data features \ldots; generate a balanced training data subset \ldots; train an entry classifier model to classify data entries as being in a multi-party anonymization transaction (MAT) class \ldots; and classify an input data entry''. Claim~8: the same with ``a first class and a second class \ldots\ wherein the labeled training data includes more entries in the second class''. Claim~4: random-forest impurity importance. Claims 3, 5, 6: candidate models selected ``based on a result of the testing''.}
+
+\noindent\textbf{Anticipation by St\"utz, Stockinger, Moreno-Sanchez, Haslhofer and Maffei (ACM AFT~'22, 19 Sep 2022; arXiv:2109.10229).}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.4cm}X}
+\toprule
+Element of claim~1 & Disclosure in St\"utz et al.\ (Sec.~3.1) \\
+\midrule
+Labeled training data & 28,890 Wasabi CoinJoins from the coordinator plus 29,202 randomly sampled negatives \\
+Standard and engineered features & Inputs/outputs plus engineered \texttt{ratio\_num\_input\_num\_output}, \texttt{num\_uniq\_output\_val}, \texttt{rng\_output\_val}, \texttt{min\_output\_val}, \texttt{mean\_dec\_places}, \texttt{num\_input\_reuse}, \texttt{mean\_output\_cluster\_size}, \texttt{is\_native\_segwit} \\
+Feature selection & Correlation screening (Pearson $\rho<0.85$) and random-forest importance ranking (Fig.~3) \\
+Balanced training subset & ``To establish a balanced ground truth \ldots\ randomly sampled 29,202 negative instances'' \\
+Train a MAT classifier & Random forest, 500 trees, 70/30 split; accuracy 99.98\%, FPR 0.0114\%, FNR 0.0230\% (Table~1) \\
+Classify input entries & 100,443 further transactions classified (10 false positives); 10 self-executed Wasabi transactions all classified correctly (Sec.~3.1.4) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+JoinDetect, the inventors' own paper published the day the application was filed, lists St\"utz et al.\ in its references (Crossref DOI 10.1145/3558535.3559782). The application's citation record, as published, does not include it. Later ML and heuristic detectors also predate the 4 Sep 2024 filing: protocol-derived necessary-condition heuristics for JoinMarket, Wasabi~1.x/2.0 and Whirlpool (Schnoering and Vazirgiannis, 2023), and community detection (Wahrst\"atter et al., IEEE TDSC 2023).
+
+\noindent\textbf{Methodological defects written into the claims.}
+\begin{itemize}
+  \item \textbf{Claim~8 reads on almost any imbalanced binary classification pipeline.} It names neither CoinJoin nor blockchains. It reads on standard practice: rebalancing (He and Garcia, 2009; Chawla et al., 2002), choosing the training class ratio by experiment (Weiss and Provost, 2003, which is exactly claims 2--3, 9--10 and 16--17) and feature selection (Guyon and Elisseeff, 2003).
+  \item \textbf{Claim~4 recites a biased importance measure.} Claim~4 (impurity weighted by node-reach probability, averaged over trees, then normalised) is mean decrease in impurity (MDI), the default \texttt{feature\_importances\_} of scikit-learn's random forest (Breiman, 2001; Louppe et al., 2013). MDI is known to favour continuous and high-cardinality variables (Strobl et al., 2007). The reviewer tested this on synthetic CoinJoin-like data (60,000 rows, 7.5\% positives). Two variables were real signals: a count of equal outputs and a weak continuous ratio. Three were pure noise: block height, a numeric address hash and a binary flag.
+  \begin{center}\small
+  \begin{tabular}{lcc}
+  \toprule
+  Feature & MDI share & Held-out permutation $\Delta$AP \\
+  \midrule
+  Count of equal outputs (dominant signal) & 22.9\% (rank 4 of 5) & 0.303 \\
+  Input/output ratio (weak signal) & 25.7\% (rank 1) & 0.009 \\
+  Block height (pure noise) & 25.1\% (rank 3) & 0.006 \\
+  Address hash as a number (pure noise) & 25.3\% (rank 2) & 0.005 \\
+  Binary flag (pure noise) & 1.1\% (rank 5) & 0.002 \\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  Under claim~5 (``a first quantity of training data features associated with highest calculated feature importance scores''), a top-1 to top-3 selection discards the dominant signal and keeps two noise features. Block height is one of the patent's own listed features ([0020]).
+  \item \textbf{Claims 3, 5 and 6 select the model on the test data that is then reported.} In [0032] and [0057], candidate models (several class ratios, and feature counts from one up to all non-zero features) are ``tested using the testing portion'', and the best FPR+FNR is kept. Minimising FPR+FNR is equivalent to maximising Youden's $J$ (Youden, 1950). Selecting on the evaluation split biases the estimate optimistically (Cawley and Talbot, 2010). For a test set of 1M transactions at 0.1\% prevalence (1,000 positives, [0034]) and $K\approx1{,}100$ candidates (an assumption of 10 ratios $\times$ 110 feature counts), a true FNR of 2.0\% is expected to be reported as 0.55\% if candidate errors are independent. It is still reported as 1.54\% if they are 90\% correlated (Gaussian approximation; Appendix~A).
+  \item \textbf{The label source sets a ceiling on performance.} Labels come from ``open source intelligence tools'' or are ``automatically generated using a model or other automated process'' ([0018], [0022]). JoinDetect refers to ``ground truth labelled data and proprietary blockchain analytics''. If the labels are produced by heuristics, the classifier learns those heuristics and cannot find the ``advanced MAT techniques'' that [0001] says heuristics miss.
+  \item \textbf{Features risk leaking the target.} The listed features include attribution counts per address (``illicit counts, \ldots\ criminal counts, and/or dark market counts'', [0020]) and block height. If the attribution includes mixer or CoinJoin categories, these leak the target. Block height confounds the result with the protocol era, since Wasabi~1.x, Wasabi~2.0 and Whirlpool are temporally disjoint.
+  \item \textbf{No prior-shift correction.} Models are trained at 0.1--50\% MAT and deployed at 0.1--2\% ([0025], [0034]). Nothing adjusts scores or thresholds for the new class prior (Elkan, 2001; Saerens et al., 2002).
+  \item \textbf{No results.} The application reports no performance figure. Before the EPO, an asserted technical effect that is not made credible cannot support inventive step.
+\end{itemize}
+\req{Labels independent of any heuristic used in the features. A heuristic baseline, such as the published Wasabi/Whirlpool/JoinMarket rules. Nested selection, with the reported test split never used for choices. Permutation or conditional importance in place of MDI. A temporal hold-out spanning protocol changes (Samourai's Whirlpool coordinator went offline after the April 2024 arrests, and zkSNACKs' Wasabi coordinator stopped on 1 June 2024). Calibrated precision at deployment prevalence.}
+
+\act{File PCT third-party observations on WO~2026/054906 citing St\"utz et al., Schnoering and Vazirgiannis, and Weiss and Provost. This is possible until \textbf{4 January 2027} (28 months from priority). Make the same art available to the US examiner, for example by a pre-issuance submission under 35~U.S.C.~\S122(e) if still timely.}
+
+%==================================================================
+\section{Major issue 5: US~2026/0037961~A1 --- the ``batch'' label is a definition, so the evaluation is circular \sev{critical}}\label{sec:batch}
+\claim{``Here a batch transaction is defined as a transaction containing more than one output. Using this definition, data for previously performed transactions is analysed to identify addresses involved in transactions having more than one output, which are then identified and labelled'' ([0055]). XGBoost: ``accuracy 0.9813, precision 0.9931, recall 0.9693, F1-score 0.9810'' ([0083]). ``Blockchain analytics companies and researchers are yet to address this need'' ([0007]).}
+
+\noindent\textbf{Analysis.}
+\begin{itemize}
+  \item \textbf{The definition captures ordinary payments.} The Bitcoin whitepaper describes the normal payment as having ``at most two outputs: one for the payment, and one returning the change, if any, back to the sender'' (Nakamoto, 2008, \S9). Under [0055], that payment is a ``batch''. The label therefore does not separate exchange batching (``a single transaction with many outputs'', [0029]) from a single payment with change. That separation is the change-output detection problem, which M\"oser and Narayanan (FC~2022) addressed with a random forest (ROC AUC 0.9986).
+  \item \textbf{The label is a function of an input feature.} Output counts and averages are among the retained features ([0054]). A model that ``detects'' $n_\mathrm{out}>1$ from features that contain $n_\mathrm{out}$ measures reconstruction of a definition. A one-line rule would score 1.0, and no such baseline is reported.
+  \item \textbf{The evaluation set was artificially balanced.} Solving $1-\mathrm{acc}=\pi[(1-r)+r(1-p)/p]$ for the reported figures gives a class prevalence of $\pi=0.4995$ (0.4969--0.5022 under 4-decimal rounding). A prevalence of exactly one half is a construction, not a population sample. Under the application's own definition, the canonical two-output payment counts as positive. No population, time range or dataset size is stated.
+  \item \textbf{The feature-selection rationale is misapplied.} The stated rationale is ``instability in coefficient estimation'' from multicollinearity ([0062]), which is a property of linear models. Tree ensembles such as XGBoost do not estimate coefficients, and correlated features do not degrade their predictions in the way described.
+  \item \textbf{The splitting protocol is contradictory, and the novelty statement is false.} Claim~3 recites a 70/25/5 split, while [0084] describes 10-fold cross-validation as ``validation''. Splitting at random by transaction leaves the same address-level labels on both sides. Batching and change analysis are long-studied (Meiklejohn et al., 2013; M\"oser and Narayanan, 2022), so [0007] is incorrect.
+\end{itemize}
+\req{A label for exchange batching that is independent of output count, such as one derived from attributed exchange wallets. The rule baseline. Population prevalence. Address-disjoint splits.}
+
+%==================================================================
+\section{Major issue 6: US~2024/0037582~A1 --- the ``quantum'' allocation problem is a totally unimodular LP \sev{critical}}\label{sec:alloc}
+\claim{``determining an optimized allocation of the opportunities to the recipients based on the respective likelihoods and the first constraint, in the quantum computer'' (claim~1); ``the number of cardholders may be in the order of millions \ldots\ the number of offers may be in the order of hundreds or thousands'' ([0057]).}
+
+\noindent\textbf{Analysis.} The disclosed model ([0070]--[0076]) maximises $\sum r_{ij}x_{ij}$ subject to $\sum_i x_{ij}\le k$ per cardholder and $b^L_i\le\sum_jx_{ij}\le b^U_i$ per offer, where the budget is ``the number of instances that the offer can be released''. Claim~4 adds groups of mutually exclusive offers.
+\begin{itemize}
+  \item \textbf{The problem is solvable exactly by LP.} The offer rows form a partition. The cardholder rows and the (group, cardholder) rows form a laminar family. The constraint matrix is therefore the incidence matrix of two laminar families, which is totally unimodular (Schrijver, 2003). The LP relaxation is integral, and the problem is solved exactly in polynomial time. The reviewer confirmed this numerically: the LP optimum had \textbf{zero fractional entries} at 80,000 binaries (1.0\,s), 1,000,000 binaries (21\,s) and 2,400,000 binaries (71\,s).
+  \item \textbf{The stated scale is far beyond any annealer.} Millions of cardholders by thousands of offers is about $10^9$ binary variables, plus slack bits. Advantage2 has about 4,400 qubits.
+  \item \textbf{Exact optimisation over noisy scores adds little.} The $r_{ij}$ are estimated propensities. Optimising noisy estimates exactly yields optimistically biased value (the optimiser's curse; Smith and Winkler, 2006).
+  \item \textbf{Direct-marketing offer optimisation is classical operations research.} See Talla Nobibon, Leus and Spieksma (EJOR 2011). The record already cites a SAS marketing-optimisation patent (US~8,296,182~B2).
+  \item \textbf{Template artefacts.} [0046]--[0047] of this offer-allocation filing refer to ``optimal switching configuration'' and ``the discount conditioned to the volume routed through each network'', text from the switching filing.
+\end{itemize}
+\req{Any instance in which the claimed quantum step beats an LP or min-cost-flow solver in quality or time.}
+
+%==================================================================
+\section{Major issue 7: US~2024/0028537~A1 --- the hidden-flow objective is degenerate and its probability formula contradicts its own example \sev{critical}}\label{sec:flow}
+\claim{``min$_{P_x,P_y}\,|P_xx-P_yy|^2$'' subject to left-stochastic, $\mathbb{Z}_2$-valued $P_x$ ($k\times n$) and $P_y$ ($k\times m$), with $k=\min(m,n)$ ([0041]--[0046]); ``the probability matrix is obtained by multiplying the input flow matrix by a transpose of the output flow matrix'' (claim~2); $F=P_y^{\top}P_x$ ([0053]); the worked example and its matrix $F$ ([0037]--[0056]).}
+
+\noindent\textbf{Recomputation on the patent's own example} (7 inputs, 5 outputs, $\sum x=31.061072$, $\sum y=31.0610727$):
+\begin{itemize}
+  \item \textbf{The uninformative solution is optimal.} Assigning every input and output to one route gives an energy of $4.9\times10^{-13}$. The patent's three-route solution has \emph{the same} energy. Brute force finds exactly three atomic balanced blocks and $\mathrm{Bell}(3)=5$ interpretations, which correspond to \textbf{125} labelled zero-energy ground states. The objective cannot prefer the informative solution. An annealer returns degenerate ground states non-uniformly (Mandr\`a, Zhu and Katzgraber, 2017), so the ``probability'' depends on hardware bias.
+  \item \textbf{The formula contradicts the example.} For binary column-stochastic $P$, $F=P_y^{\top}P_x$ is a 0/1 matrix. Its first row for the patent's own solution is $[1,1,0,1,0,0,0]$, but [0055] reports $[1/3,1/3,0,1/3,0,0,0]$. Claim~2's wording (input matrix $\times$ transpose of output matrix) is dimensionally undefined when $n\neq m$.
+  \item \textbf{The correct link probabilities were already computable.} Counting all valid interpretations gives a first row of $[1,1,2/5,1,2/5,2/5,2/5]$. The patent assigns 1/3 to links that are deterministic and 0 to links present in two of the five interpretations. This counting is what Boltzmann (LaurentMT; part of OXT since 2015, published 9 Feb 2017) defines as the ``link probability matrix'', following CoinJoin Sudoku (Atlas, 2014) and the sub-transaction model of Maurer, Neudecker and Florian (2017). Boltzmann also lists the trivial ``all inputs to all outputs'' interpretation and handles it correctly.
+  \item \textbf{The model does not fit real mixers.} Exact conservation, $\sum x=\sum y$ ([0040]), never holds for real mixers, which pay miner and mixer fees and spread activity over many transactions and time. A 300-input, 300-output CoinJoin needs 180,000 binaries before slack.
+\end{itemize}
+\req{An objective that rules out degenerate partitions. Exact counting or uniform sampling of interpretations. Fee tolerance. Comparison with Boltzmann on real transactions.}
+
+%==================================================================
+\section{Major issue 8: US~2024/0320295~A1 --- ``variable freezing'' is substitution of known values into a quadratic form \sev{major}}\label{sec:freeze}
+\claim{Claim~1: ``receiving a set of frozen variables; determining a set of freezable matrix components \ldots; determining a contribution vector \ldots; and determining an equivalent optimisation problem \ldots\ [that] can be solved on a quantum computer using fewer quantum bits''.}
+
+\noindent\textbf{Analysis.} Write $x=(x_F,x_R)$. Then $x^{\top}Qx=x_R^{\top}Q_{RR}x_R+x_R^{\top}(Q_{RF}+Q_{FR}^{\top})x_F+x_F^{\top}Q_{FF}x_F$. For binary $x_R$, the middle term moves onto the diagonal, giving $Q'=Q_{RR}+\mathrm{diag}\big((Q_{RF}+Q_{FR}^{\top})x_F\big)$ plus a constant. That is claims 1, 8 and 9 in full: the contribution vector, the diagonal matrix and the deletion of rows and columns. D-Wave's open-source \texttt{dimod} documented \texttt{BinaryQuadraticModel.fix\_variable} (``Fix the value of a variable and remove it from a binary quadratic model'') in release 0.6.10 (19 Jun 2018). Release 0.8.18 (Dec 2019) adds \texttt{fix\_variables} and the \texttt{FixedVariableComposite} sampler. The literature on fixing QUBO variables includes roof duality and persistency (Boros and Hammer, 2002) and QUBO preprocessing (Lewis and Glover, 2017). Claim~1 is performed ``by a classical computer'' ([0006]) and recites quantum hardware only as an intended use. It is a pure mathematical algorithm (\S101; Art.~52(2)(a) EPC).
+
+%==================================================================
+\section{Major issue 9: EP~4481654~A1 and siblings --- unpack, aggregate, label, train adds only a generic classifier to Issue~2's ETL \sev{major}}\label{sec:pft}
+Claim~1 (training) and claim~7 (prediction) of US~2024/0420146~A1, and the EP and WO counterparts naming Flinter, combine the routine ETL of Issue~2 with a labelled training step and ``a model trained using a machine learning process''. Claims 11--12 add ``tree-based'' and ``LGBM''. Per \emph{Recentive Analytics v.\ Fox} (Fed.\ Cir.\ 2025), ``patents that do no more than claim the application of generic machine learning to new data environments, without disclosing improvements to the machine learning models to be applied, are patent ineligible.'' The labelling defects of Issue~3 apply here as well. This application also reports a result: ``Training the LGBM on the January 2022 and February 2022 data obtained the following metrics: accuracy 0.92, precision 0.81, recall 0.2, F1-score 0.32'' ([0097] of US~2024/0420146~A1). These are exactly the figures that US~2024/0420147~A1 presents as its \emph{baseline} (Appendix~V, ``Initial Model''). The same run is therefore offered as the invention in one application and as the inferior prior state in the other. Both texts again attribute the metrics to the training months.
+
+%==================================================================
+\section{Major issue 10: EP~4651029~A1 --- embedding-level bias testing is known, of limited validity, and cannot act on API-served models \sev{major}}\label{sec:bias}
+\claim{Claim~1: ``generating input embeddings for the input data and the set of queries; performing bias testing on the input embeddings, and performing an AI input mitigation step \ldots; generating inferences using a generative AI model and providing output embeddings \ldots; performing bias testing on the output embeddings \ldots; and using the output embeddings to provide the use case model''. Claim~6: ``cosine similarities between embeddings''.}
+
+\noindent\textbf{Analysis.}
+\begin{itemize}
+  \item \textbf{The tests are known.} Association tests by cosine similarity are WEAT and SEAT (Caliskan, Bryson and Narayanan, 2017; May et al., 2019). Mitigation in embedding space is the debiasing of Bolukbasi et al.\ (2016). Demographic-swap queries ([0031]--[0032]) are standard invariance and counterfactual tests (Ribeiro et al., 2020; Parrish et al., 2022). See the survey by Gallegos et al.\ (2024).
+  \item \textbf{Intrinsic embedding metrics do not track behavioural bias.} They correlate poorly with bias in applications (Goldfarb-Tarrant et al., 2021; Cao et al., 2022), and debiasing embeddings can hide bias without removing it (Gonen and Goldberg, 2019).
+  \item \textbf{The pipeline cannot act on the models it names.} The description allows ``proprietary model[s] \ldots\ made available by API by providers such as OpenAI and Microsoft'' ([0038]). Those APIs accept tokens, not externally computed embeddings. A ``mitigated input embedding'' from a separate embedding model ([0026]) therefore cannot change what such a model generates. ``Using the output embeddings to provide the use case model'' is not defined anywhere.
+  \item \textbf{No evaluation.} No dataset, metric or result is reported.
+\end{itemize}
+
+%==================================================================
+\section{Major issue 11: EP~4617990~A1 --- a textbook LSTM forecaster with no reported accuracy \sev{major}}\label{sec:reserve}
+\claim{Claim~1: an LSTM ``time-series layer'' followed by a ``dense layer'' that maps to the future period. Claims 5--7: sine and cosine transforms of time; holiday, weekend and month-end indicators. Claim~3: 10-minute intervals and a 14-day horizon. Description: LSTM with 256 units, window 2016, stride 1, 100 epochs, batch 64, ``a total of 794592 parameters''.}
+
+\noindent\textbf{Analysis.}
+\begin{itemize}
+  \item \textbf{The parameter count pins down the architecture.} The stated 794,592 parameters equal exactly an LSTM with 256 units on 13 input features ($4\cdot(256\cdot(13+256)+256)=276{,}480$) plus a dense map from 256 units to 2,016 outputs ($257\cdot2016=518{,}112$). The model therefore emits all 2,016 ten-minute steps (14 days) from a single final hidden state.
+  \item \textbf{The model is large relative to the data, and leakage is likely.} One year of 10-minute data holds 52,560 points, fewer than the model's parameters. Stride-1 windows of length 2,016 overlap almost completely. Splitting such windows into train, validation and test sets ([0094]) without a stated chronological cut would leak.
+  \item \textbf{No accuracy or baselines are reported.} There is no MAE, RMSE or MAPE, and no seasonal-naive, ETS or ARIMA, or gradient-boosted baseline. Such baselines are strong in large forecasting competitions (Makridakis et al., 2018; 2022), and LSTMs' effective memory over thousands of steps is limited (Zhao et al., 2020).
+  \item \textbf{The claimed features are textbook.} Fourier and sine/cosine encodings of time and calendar dummies are standard (Hyndman and Athanasopoulos, \emph{Forecasting: Principles and Practice}).
+  \item \textbf{A technical misstatement.} ``The Dense layer \ldots\ is configured to begin with no learned memory'' ([0077]); dense layers have no memory.
+\end{itemize}
+
+%==================================================================
+\section{Major issue 12: US~2023/0297826~A1 --- a marked temporal point process re-labelled, with indefinite claims \sev{major}}\label{sec:tpp}
+\claim{Claim~1: ``generate a transfer function based on the transaction pattern; predict information for the account based on the density function; \ldots\ wherein the transfer function is a probability density function of a neural network and wherein the information includes a time of a future transaction linked to a correlated marker''.}
+
+\noindent\textbf{Analysis.}
+\begin{itemize}
+  \item \textbf{The method is published prior art.} The description implements ``a temporal point process \ldots\ [with] a gated recurrent neural network (RNN) to predict the times of future transactions \ldots\ across one or more markers'' ([0038]). That is RMTPP (Du et al., KDD 2016), which predicts the next event's time and its mark. Related prior art includes the neural Hawkes process (Mei and Eisner, 2017) and intensity-free neural densities of inter-event times (Shchur et al., 2020).
+  \item \textbf{The claims are indefinite in several places (\S112(b)).}
+  \begin{itemize}
+    \item ``The density function'' in claims 1, 9 and 17 has no antecedent basis.
+    \item A ``transfer function'' is equated with a probability density, which conflates distinct concepts.
+    \item ``The offer'' and ``the MCC'' in claims 8 and 16 lack antecedent basis, because those claims depend on claims 1 and 9.
+  \end{itemize}
+  \item \textbf{The description contradicts the claims.} [0074] states that ``the LSTM network regress[es] time of the next transaction and MCC bin directly''. Regressing a point estimate is not learning a density.
+\end{itemize}
+
+%==================================================================
+\section{Major issue 13: US~2024/0176598~A1 --- a generic MLOps platform \sev{moderate}}\label{sec:automl}
+Claim~1 recites a project-store server, a data-store server, a search engine with ``manual or automated selection of features'' and an AI project server with training, validation, inference and input modules. These are the standard components of MLflow (Zaharia et al., 2018), Kubeflow and hyper-parameter services such as Google Vizier (Golovin et al., 2017). The examiner's citations (Bombora, Coretronic, Denso, JPMorgan, Fujitsu, IBM) already cover them. The abstract's ``model interference module'' is a typographical error for ``inference''.
+
+%==================================================================
+\section{Major issue 14: Patterns across the portfolio \sev{major}}\label{sec:patterns}
+\begin{itemize}
+  \item \textbf{Boilerplate physics.} The false ``one computation cycle'' paragraph opens US~12,363,024~B2 [0003], US~2024/0037582~A1 [0003], US~2024/0028537~A1 [0002] and US~2024/0320295~A1 [0003].
+  \item \textbf{No evaluation.} Ten of the 13 live families report no quantitative result. The three that do (families 3, 5 and 9; Issues~3, 5 and~9) fail basic checks against their own text. Families 3 and 9 reuse one LightGBM run in contradictory roles.
+  \item \textbf{Generic ML in a new data setting.} Families 2--5, 9 and 11--13 claim off-the-shelf learners (``any type of machine learning model'', LightGBM, XGBoost, random forests, LSTMs) applied to a new data environment. The specifications disclose no improvement to the models themselves, which is the configuration \emph{Recentive} (2025) holds ineligible.
+  \item \textbf{Template and terminology errors.} Examples include ``Light Boosted Gradient Machine'' in claim~19 of US 2024/0420147 A1 (LightGBM is the Light \emph{Gradient Boosting} Machine of Ke et al., 2017), switching text inside the allocation filing, ``model interference module'', and missing antecedents.
+\end{itemize}
+
+%==================================================================
+\section{Minor issues}
+\begin{enumerate}[label=m\arabic*.,leftmargin=2.2em]
+  \item \textbf{Gradient boosting is described incorrectly.} US~2024/0420147~A1 [0099] says GBM reduces the loss ``by changing the data point weighting''. That is AdaBoost's mechanism; gradient boosting fits successive learners to negative gradients (Friedman, 2001).
+  \item \textbf{The discount threshold is inconsistent.} US~12,363,024~B2 [0084] grants the discount when $\sum T_s\ge V_k$, so it applies at equality. Table~3 and [0101] treat a volume equal to $V_k$ inconsistently.
+  \item \textbf{Notation drifts.} US~12,363,024~B2 switches between $d_k$ and $d_{s,k}$ ([0113] against [0119]), and [0114] names ``P'' as the penalisation parameter that the formula calls $\beta$.
+  \item \textbf{A flawed evaluation procedure.} In US~2026/0065141~A1, [0033] tests models trained at 0.1\% MAT on a 50\% subset as ``an upper bound on how poorly'' they perform, which is not a valid bound. Paragraph numbering also jumps from [0071] to [0079] in the US publication.
+  \item \textbf{An arbitrary split is claimed as inventive.} US~2026/0037961~A1 claim~3 claims a 70/25/5 split. EP~4617990~A1 claim~3 likewise claims arbitrary parameters (10-minute bins, 14 days).
+  \item \textbf{Indefinite final step.} EP~4651029~A1 claim~1 does not define how output embeddings ``provide'' a use case model.
+  \item \textbf{A false capacity statement.} US~2024/0420131~A1 and US~2024/0420147~A1 state that Bitcoin transactions ``can contain up to 2000 inputs and outputs''. The protocol has no such limit; the effective bound is transaction weight.
+\end{enumerate}
+
+%==================================================================
+\section{Claims-versus-evidence summary}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.4cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.3cm}}
+\toprule
+Claim & Evidence status & Verdict \\
+\midrule
+C1: block ETL ``not practically achievable'' & Google BigQuery dataset and tutorial (2018), BlockSci (2017), GraphSense, Galici (2020) & Contradicted \\
+C2: neighbour data improves fraud prediction & Label defined from the neighbour; recall 0.39 below the label rule's 1.0; metrics attributed to training months; trivial baseline 0.908; Elliptic (2019) & Leakage; not novel \\
+C3: ML pipeline beats heuristics for MATs & No results; St\"utz et al.\ (2022) anticipates; MDI and test-set selection biases are recited in the claims & Not established \\
+C4: batch detection, acc.\ 0.9813 & Label $=$ ``$>1$ output''; inferred $\pi=0.4995$; no baseline & Circular \\
+C5: quantum switching, ``one cycle'' optimum & Quantum step closed-form (5,496/5,496); wrong energy; non-convex ``convex'' step; 19.5--23\% suboptimal; Gambella and Simonetto (2020) & Contradicted \\
+C6: quantum offer allocation at scale & TU LP; 0 fractional entries at 2.4M binaries; stated $10^9$ binaries vs $\sim$4,400 qubits & Contradicted \\
+C7: QUBO yields link probabilities & Degenerate (125 ground states); formula contradicts example; Boltzmann (2017) & Contradicted \\
+C8: freezing saves qubits & True, but it is a 2018 \texttt{dimod} function & Trivially true; not novel \\
+C9: embedding bias tests de-bias GenAI & Known tests with weak external validity; cannot act on API models & Not established \\
+C10: LSTM, TPP and MLOps are inventions & No metrics; textbook prior art; indefinite claims & Not established \\
+\bottomrule
+\end{tabularx}
+
+%==================================================================
+\section{Minimum evidence the applicant would need}\label{sec:experiments}
+\begin{enumerate}[label=E\arabic*.]
+  \item Switching: a corrected energy (no $P$-scaled discount); a benchmark of the claimed quantum step against an exact MILP on identical instances; enablement of claim~12(c).
+  \item Transaction analysis: identification of any step not performed by the 2018 BigQuery workflow or by BlockSci.
+  \item Fraud: entity- and time-disjoint evaluation without attribution-derived inputs; comparison with the labelling rule and a taint baseline; PR-AUC with confidence intervals.
+  \item CoinJoin: heuristic-independent labels; nested selection; permutation importance; temporal hold-out across protocol changes; a published heuristic baseline.
+  \item Batching: a label independent of output count; the one-line rule baseline; population prevalence.
+  \item Allocation: any instance where the quantum computer beats LP or min-cost flow.
+  \item Hidden flow: a non-degenerate objective; comparison with Boltzmann on real transactions with fees.
+  \item Applied AI: extrinsic bias evaluation; forecasting error against standard baselines; any evaluation of the TPP and MLOps claims.
+\end{enumerate}
+
+%==================================================================
+\section{Recommended procedural actions}\label{sec:actions}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{3.0cm}}
+\toprule
+Document & Available route & Deadline \\
+\midrule
+US~12,718,235~B2 (granted) & Post-grant review, 35~U.S.C.~\S321 (\S\S101, 102, 103, 112); or \emph{ex parte} reexamination, \S302 & PGR by 25 May 2027 \\
+US~12,363,024~B2 (granted) & \emph{Ex parte} reexamination (\S302) or \emph{inter partes} review (\S311, \S\S102/103) & PGR closed 15 Apr 2026 \\
+WO~2026/054906~A1 (CoinJoin) & PCT third-party observations (ePCT) & 4 Jan 2027 \\
+EP~4481653/4/5, EP~4687089, EP~4260250, EP~4260246, EP~4453756, EP~4367606, EP~4651029, EP~4617990, EP~4246407 & Third-party observations, Art.~115 EPC (free; may be anonymous) & While pending \\
+Pending US applications & Pre-issuance submissions, 35~U.S.C.~\S122(e) & Before the earlier of allowance and the later of (publication + 6 months, first rejection) \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\noindent These routes are listed for completeness; they are not legal advice.
+
+%==================================================================
+\section{Balanced note on strengths}
+Several parts of the portfolio are to its credit:
+\begin{itemize}
+  \item The problems are real. Separating exchange batching from ordinary payments, tracing mixer flows and routing payments economically all have compliance value.
+  \item The fraud application uses a temporal split (train Jan--Feb, test March). The CoinJoin application describes a hash-based check against train--test contamination ([0034]).
+  \item The quantum filings state their formulations explicitly, which is what made the independent checks in this report possible.
+  \item The JoinDetect team engaged with the CoinJoin literature and with concept drift.
+\end{itemize}
+With heuristic-independent labels, leakage-free and entity-disjoint evaluation, and honest baselines, narrower claims could be supported. One example is a calibrated CoinJoin detector with a measured advantage over published rules on post-2024 protocols. The current documents do not make that case.
+
+%==================================================================
+\section{Final reviewer decision}\label{sec:decision}
+\noindent\textbf{Decision: CANCELLATION RECOMMENDED for US~12,363,024~B2 (claims 1--19) and US~12,718,235~B2 (claims 1--20). STRONG REJECT for all pending families.} Technical soundness 1/5, Disclosure quality 2/5, Novelty and inventive step 1/5, Confidence 5/5 (technical).
+
+\smallskip
+\noindent The decision is not about the people or the problems, which are worthwhile. It is driven by what the documents themselves show:
+\begin{enumerate}[label=(\roman*)]
+  \item \textbf{The granted quantum claims fail on their own mathematics.} The quantum step is a threshold test, the energy function is wrong, the ``convex'' step is concave, claim~12(c) contradicts [0128], and the method is beaten by exact classical solvers. The decomposition was published by IBM eleven months before the priority date. (Issue~1.)
+  \item \textbf{The granted ETL claims were public in 2018.} (Issue~2.)
+  \item \textbf{The only reported ML results come from how the labels are defined.} The fraud label is defined by the neighbour; the batch label is defined by output count. (Issues~3 and~5.)
+  \item \textbf{The CoinJoin claims are anticipated.} They read element-by-element on art cited by the inventors' own paper, and the claims themselves recite biased selection. (Issue~4.)
+  \item \textbf{The other quantum filings recast an LP, an ill-posed partition problem and a 2018 library function as quantum inventions.} (Issues~6--8.)
+  \item \textbf{The applied-AI filings claim textbook methods without evaluation and with indefinite language.} (Issues~9--13.)
+\end{enumerate}
+\noindent Items (i)--(iv) are each sufficient on their own. The record would have to change substantially, not merely be reworded, before any of these claims could be justified.
+
+%==================================================================
+\section{Verification log}
+\begin{itemize}
+  \item \textbf{Claims and text}: read in full from Google Patents for all 33 publications, between 1 and 2 Nov 2026. The granted claims of US~12,718,235~B2 were read from Justia's grant record (granted 25 Aug 2026; examiners B.\,M.~Sigmond and B.\,D.~Shah).
+  \item \textbf{Status}: from Google Patents legal-event data, Justia and Espacenet family data. The EPO Register and the ACM Digital Library were not reachable by automated means (Cloudflare). JoinDetect was therefore assessed from its Crossref and ACM metadata and abstract, not its full text.
+  \item \textbf{Primary sources}:
+  \begin{itemize}
+    \item St\"utz et al.\ (arXiv:2109.10229v3, Sec.~3.1, Table~1; Crossref DOI 10.1145/3558535.3559782).
+    \item Gambella and Simonetto (arXiv:2001.02069; DOI 10.1109/TQE.2020.3033139).
+    \item Weber et al.\ (arXiv:1908.02591, the ``aggregated features'' text).
+    \item The Google Cloud blog of 8 Feb 2018.
+    \item \texttt{dimod} documentation, release 0.6.10 (19 Jun 2018) and 0.8.18 (24 Dec 2019).
+    \item D-Wave's Advantage2 press release (20 May 2025) and Zephyr white paper.
+    \item LaurentMT's Boltzmann write-ups (Medium, 9 Feb 2017; GitHub gist).
+    \item The Chainalysis 2023 Crypto Crime Report (0.24\% for 2022).
+    \item The \emph{Recentive} opinion (No.~23-2437, 18 Apr 2025).
+    \item Crossref records for Sadrian and Yoon (1994), Talla Nobibon et al.\ (2011), Weiss and Provost (2003), M\"oser et al.\ (2014) and Goldfarb-Tarrant et al.\ (2021).
+  \end{itemize}
+  \item \textbf{Computations}: all numbers in Issues~1, 3--7 and~11 were recomputed by the scripts in Appendix~A.
+  \item \textbf{Stated assumptions}:
+  \begin{itemize}
+    \item \emph{Random instances} (Issue~1): the instances are synthetic, because the patent discloses no data. The literal-energy example is illustrative.
+    \item \emph{Number of candidate models} (Issue~4): $K=1{,}100$ is an assumption (10 class ratios $\times$ 110 feature counts).
+    \item \emph{Comparison with Chainalysis}: it compares a count share with a value share.
+    \item \emph{Reserve parameter count}: assumes a standard Keras LSTM with bias terms.
+    \item \emph{Allocation}: TU holds for count budgets and disjoint exclusivity groups, as disclosed. Monetary budgets would make the problem a knapsack variant, still solved near-optimally by LP-based methods.
+  \end{itemize}
+\end{itemize}
+
+%==================================================================
+\section*{References (primary sources used in this critique)}
+\small
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+  \item \textbf{Patents (Mastercard International Inc.)}: US~12,363,024~B2; US~12,718,235~B2; US~2024/0420131~A1; US~2024/0420146~A1; US~2024/0420147~A1; US~2026/0037961~A1; US~2026/0065141~A1; US~2024/0037582~A1; US~2024/0039830~A1; US~2024/0028537~A1; US~2024/0320295~A1; US~2024/0176598~A1; US~2023/0297826~A1; US~2021/0019717~A1; US~2017/0178122~A1; EP~4260250~A1/A4; EP~4260246~A1; EP~4481653~A1; EP~4481654~A1; EP~4481655~A1; EP~4687089~A1; EP~4651029~A1; EP~4617990~A1; WO~2022/125658~A1; WO~2022/125660~A1; WO~2024/263363/5/6~A1; WO~2026/054906~A1; WO~2025/240033~A1; WO~2025/193368~A1; WO~2024/118157~A1; GB~2601996~A; GB~2602251~A. \url{https://patents.google.com}
+  \item O'Meara, J.\,W., Taneja, M., Nicholls, J., Kothale, N., Flinter, S., Jurcut, A.\,D. \emph{JoinDetect.} ACM GoodIT '24, 2024. DOI 10.1145/3677525.3678633.
+  \item St\"utz, R., Stockinger, J., Moreno-Sanchez, P., Haslhofer, B., Maffei, M. \emph{Adoption and Actual Privacy of Decentralized CoinJoin Implementations in Bitcoin.} ACM AFT '22. DOI 10.1145/3558535.3559782; arXiv:2109.10229.
+  \item Schnoering, H., Vazirgiannis, M. \emph{Heuristics for Detecting CoinJoin Transactions on the Bitcoin Blockchain.} arXiv:2311.12491, 2023.
+  \item Wahrst\"atter, A.\ et al. \emph{Improving Cryptocurrency Crime Detection: CoinJoin Community Detection Approach.} IEEE TDSC, 2023.
+  \item Weber, M.\ et al. \emph{Anti-Money Laundering in Bitcoin: Experimenting with Graph Convolutional Networks for Financial Forensics.} KDD '19 Workshop; arXiv:1908.02591.
+  \item M\"oser, M., B\"ohme, R., Breuker, D. \emph{Towards Risk Scoring of Bitcoin Transactions.} FC 2014 Workshops, LNCS 8438.
+  \item M\"oser, M., Narayanan, A. \emph{Resurrecting Address Clustering in Bitcoin.} FC 2022; arXiv:2107.05749.
+  \item Meiklejohn, S.\ et al. \emph{A Fistful of Bitcoins.} IMC 2013.\quad Nakamoto, S. \emph{Bitcoin: A Peer-to-Peer Electronic Cash System}, 2008, \S9.
+  \item Day, A., Bookman, C. \emph{Bitcoin in BigQuery: blockchain analytics on public data.} Google Cloud Blog, 8 Feb 2018.
+  \item Kalodner, H.\ et al. \emph{BlockSci.} USENIX Security 2020; arXiv:1709.02489.\quad Haslhofer, B.\ et al. \emph{GraphSense.} arXiv:2102.13613, 2021.
+  \item Galici, R.\ et al. \emph{Applying the ETL Process to Blockchain Data. Prospect and Findings.} Information 11(4):204, 2020.
+  \item LaurentMT. \emph{Introducing Boltzmann} (9 Feb 2017) and \emph{Bitcoin Transactions \& Privacy, parts 1--2}.\quad Atlas, K. \emph{CoinJoin Sudoku}, 2014.\quad Maurer, F.\,K., Neudecker, T., Florian, M. \emph{Anonymous CoinJoin Transactions with Arbitrary Values.} IEEE Trustcom 2017.
+  \item Gambella, C., Simonetto, A. \emph{Multi-block ADMM Heuristics for Mixed-Binary Optimization on Classical and Quantum Computers.} IEEE TQE 1, 2020; arXiv:2001.02069.
+  \item Glover, F., Kochenberger, G., Du, Y. \emph{Quantum Bridge Analytics I: a tutorial on formulating and using QUBO models.} 4OR 17, 2019.\quad Lucas, A. \emph{Ising formulations of many NP problems.} Front.\ Phys.\ 2:5, 2014.
+  \item Neukart, F.\ et al. \emph{Traffic Flow Optimization Using a Quantum Annealer.} Front.\ ICT 4:29, 2017.
+  \item Albash, T., Lidar, D.\,A. \emph{Adiabatic quantum computation.} Rev.\ Mod.\ Phys.\ 90:015002, 2018.\quad Altshuler, B., Krovi, H., Roland, J. PNAS 107:12446, 2010.\quad R{\o}nnow, T.\,F.\ et al. \emph{Defining and detecting quantum speedup.} Science 345:420, 2014.
+  \item Mandr\`a, S., Zhu, Z., Katzgraber, H.\,G. \emph{Exponentially biased ground-state sampling of quantum annealing machines.} PRL 118:070502, 2017.
+  \item Kerenidis, I., Prakash, A. \emph{A quantum interior point method for LPs and SDPs.} ACM TQC 1(1), 2020.
+  \item D-Wave Quantum Inc. \emph{Advantage2 general availability} (20 May 2025); \emph{Zephyr Topology of D-Wave Quantum Processors} (white paper); \texttt{dimod} documentation 0.6.10 (2018) and 0.8.18 (2019).
+  \item Boros, E., Hammer, P.\,L. \emph{Pseudo-Boolean optimization.} Discrete Appl.\ Math.\ 123, 2002.\quad Lewis, M., Glover, F. \emph{QUBO problem preprocessing.} Networks 70(2), 2017.
+  \item Sadrian, A.\,A., Yoon, Y.\,S. \emph{A procurement decision support system in business volume discount environments.} Oper.\ Res.\ 42(1):14, 1994.
+  \item Talla Nobibon, F., Leus, R., Spieksma, F. \emph{Optimization models for targeted offers in direct marketing.} EJOR 210(3), 2011.\quad Schrijver, A. \emph{Combinatorial Optimization.} Springer, 2003.\quad Smith, J., Winkler, R. \emph{The Optimizer's Curse.} Mgmt.\ Sci.\ 52(3), 2006.
+  \item Breiman, L. \emph{Random Forests.} Mach.\ Learn.\ 45, 2001.\quad Louppe, G.\ et al. NeurIPS 2013.\quad Strobl, C.\ et al. \emph{Bias in random forest variable importance measures.} BMC Bioinformatics 8:25, 2007.
+  \item Weiss, G., Provost, F. JAIR 19, 2003.\quad He, H., Garcia, E. IEEE TKDE 21(9), 2009.\quad Chawla, N.\ et al. \emph{SMOTE.} JAIR 16, 2002.\quad Guyon, I., Elisseeff, A. JMLR 3, 2003.
+  \item Cawley, G., Talbot, N. JMLR 11, 2010.\quad Elkan, C. IJCAI 2001.\quad Saerens, M.\ et al. Neural Comput.\ 14(1), 2002.\quad Youden, W.\,J. Cancer 3(1), 1950.
+  \item Kaufman, S.\ et al. \emph{Leakage in data mining.} ACM TKDD 6(4), 2012.\quad Kapoor, S., Narayanan, A. \emph{Leakage and the reproducibility crisis in ML-based science.} Patterns 4(9), 2023.
+  \item Ke, G.\ et al. \emph{LightGBM.} NeurIPS 2017.\quad Chen, T., Guestrin, C. \emph{XGBoost.} KDD 2016.\quad Friedman, J. Ann.\ Stat.\ 29(5), 2001.
+  \item Chainalysis. \emph{The 2023 Crypto Crime Report}, Feb 2023.
+  \item Caliskan, A., Bryson, J., Narayanan, A. Science 356, 2017.\quad May, C.\ et al. NAACL 2019.\quad Bolukbasi, T.\ et al. NeurIPS 2016.\quad Gonen, H., Goldberg, Y. NAACL 2019.
+  \item Goldfarb-Tarrant, S.\ et al. ACL 2021.\quad Cao, Y.\,T.\ et al. ACL 2022.\quad Ribeiro, M.\,T.\ et al. \emph{CheckList.} ACL 2020.\quad Parrish, A.\ et al. \emph{BBQ.} Findings ACL 2022.\quad Gallegos, I.\ et al. Comput.\ Linguist.\ 50(3), 2024.
+  \item Du, N.\ et al. \emph{Recurrent Marked Temporal Point Processes.} KDD 2016.\quad Mei, H., Eisner, J. NeurIPS 2017.\quad Shchur, O.\ et al. ICLR 2020.
+  \item Makridakis, S.\ et al. PLoS ONE 13(3), 2018; IJF 38(4), 2022 (M5).\quad Zhao, J.\ et al. \emph{Do RNN and LSTM have Long Memory?} ICML 2020.\quad Hyndman, R., Athanasopoulos, G. \emph{FPP}, 3rd ed.
+  \item Zaharia, M.\ et al. \emph{MLflow.} IEEE Data Eng.\ Bull., 2018.\quad Golovin, D.\ et al. \emph{Google Vizier.} KDD 2017.
+  \item \emph{Alice Corp.\ v.\ CLS Bank}, 573 U.S. 208 (2014). \emph{Electric Power Group v.\ Alstom}, 830 F.3d 1350 (Fed.\ Cir.\ 2016). \emph{Recentive Analytics v.\ Fox Corp.}, 134 F.4th 1205 (Fed.\ Cir.\ 2025). \emph{Amgen v.\ Sanofi}, 598 U.S. 594 (2023). EPO T~641/00 (COMVIK); G~1/19. 12~C.F.R.~\S235.7.
+\end{itemize}
+
+\normalsize
+%==================================================================
+\appendix
+\section{Reproducibility: scripts and outputs}
+The scripts listed below are released with this report. They run with Python~3.12, NumPy, SciPy~1.16 (HiGHS) and scikit-learn~1.8 on a laptop CPU.
+\begin{itemize}
+  \item \texttt{verify\_switching.py}: the literal energy (\S1.2); the closed-form binary step against exhaustive enumeration (5,496/5,496); claim-12 alternation against the MILP on 200 instances (\S1.5); MILP scaling; QUBO sizing.
+  \item \texttt{verify\_switching\_fractional\_scale.py}: exact $2^n$-pattern enumeration with one LP per pattern (12\,s at $m=200$, 54\,s at $m=1{,}000$).
+  \item \texttt{verify\_allocation.py}: LP integrality at 80k, 1.0M and 2.4M binaries (0 fractional entries).
+  \item \texttt{verify\_hiddenflow.py}: the patent's example (energies, 125 ground states, $F$ against [0055], Boltzmann link probabilities).
+  \item \texttt{verify\_ml.py}: the batching prevalence inversion; the fraud baselines and burden; test-set selection optimism; MDI against permutation importance.
+\end{itemize}
+
+\section{Claim~1 of US~12,718,235~B2 as one query on Google's 2018 public dataset}
+\begin{lstlisting}[language=SQL]
+-- "determining a range of blocks", "unpacking each block into ... rows of input and
+-- output data", "aggregating entity information and transaction information into a
+-- block analysis table"  (public dataset launched 8 Feb 2018)
+WITH io_rows AS (
+  SELECT t.block_number, t.`hash` AS tx, 'input' AS side, a AS address, i.value
+  FROM `bigquery-public-data.crypto_bitcoin.transactions` t, UNNEST(t.inputs) i, UNNEST(i.addresses) a
+  WHERE t.block_number BETWEEN 720000 AND 720143
+  UNION ALL
+  SELECT t.block_number, t.`hash`, 'output', a, o.value
+  FROM `bigquery-public-data.crypto_bitcoin.transactions` t, UNNEST(t.outputs) o, UNNEST(o.addresses) a
+  WHERE t.block_number BETWEEN 720000 AND 720143)
+SELECT block_number,
+       COUNT(DISTINCT tx)                 AS n_transactions,
+       COUNT(DISTINCT address)            AS n_entities,
+       SUM(IF(side = 'input', value, 0))  AS total_input_value,
+       AVG(value) AS mean_value, STDDEV(value) AS sd_value
+FROM io_rows
+GROUP BY block_number
+ORDER BY block_number;
+\end{lstlisting}
+
+\end{document}

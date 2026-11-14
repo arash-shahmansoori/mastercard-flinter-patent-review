@@ -1,0 +1,129 @@
+{
+ "A_literal_energy": {
+  "true_optimum": {
+   "network": 1,
+   "cost": 1000.0,
+   "alternative_N2_discounted_cost": 1200.0
+  },
+  "literal_argmin_by_P": [
+   {
+    "P": 1.0,
+    "argmin_network": 1,
+    "discount_on": false,
+    "energy": 1000.0,
+    "true_cost_of_argmin": 1000.0
+   },
+   {
+    "P": 3.0,
+    "argmin_network": 2,
+    "discount_on": true,
+    "energy": 600.0,
+    "true_cost_of_argmin": 1200.0
+   },
+   {
+    "P": 5.0,
+    "argmin_network": 2,
+    "discount_on": true,
+    "energy": 0.0,
+    "true_cost_of_argmin": 1200.0
+   },
+   {
+    "P": 10.0,
+    "argmin_network": 2,
+    "discount_on": true,
+    "energy": -1500.0,
+    "true_cost_of_argmin": 1200.0
+   }
+  ]
+ },
+ "B_fstep_closed_form_agreement": {
+  "agree": 5496,
+  "total": 5496
+ },
+ "C_claim12_vs_global": {
+  "instances": 200,
+  "two_inits": {
+   "frac_suboptimal(>0.01%)": 0.23,
+   "mean_gap_%": 1.5955852424533314,
+   "median_gap_%": 0.0,
+   "p90_gap_%": 6.2490410232876465,
+   "max_gap_%": 24.398412997802275
+  },
+  "twelve_starts": {
+   "frac_suboptimal(>0.01%)": 0.195,
+   "mean_gap_%": 1.3546445848811406,
+   "median_gap_%": 0.0,
+   "p90_gap_%": 3.0963039968404713,
+   "max_gap_%": 23.56507732204729
+  }
+ },
+ "D_exact_MILP_scale": [
+  {
+   "types_m": 10,
+   "networks_n": 3,
+   "binaries": 63,
+   "status": 0,
+   "mip_gap": 0.0,
+   "seconds": 0.004
+  },
+  {
+   "types_m": 100,
+   "networks_n": 5,
+   "binaries": 1005,
+   "status": 0,
+   "mip_gap": 0.0,
+   "seconds": 0.051
+  },
+  {
+   "types_m": 1000,
+   "networks_n": 10,
+   "binaries": 20010,
+   "status": 0,
+   "mip_gap": 0.0,
+   "seconds": 119.888
+  },
+  {
+   "types_m": 5000,
+   "networks_n": 10,
+   "binaries": 100010,
+   "status": 0,
+   "mip_gap": 0.0,
+   "seconds": 402.504
+  }
+ ],
+ "E_literal_QUBO_size": {
+  "instances": [
+   {
+    "types_m": 100,
+    "networks_n": 5,
+    "slack_bits_per_network": 20,
+    "logical_vars": 605,
+    "dense_clique_per_network": 121,
+    "logical_couplers": 37300,
+    "coeff_dynamic_range_T2_over_Tmin": "~1.0e+08 (T_s^2 terms)"
+   },
+   {
+    "types_m": 1000,
+    "networks_n": 10,
+    "slack_bits_per_network": 24,
+    "logical_vars": 10250,
+    "dense_clique_per_network": 1025,
+    "logical_couplers": 5293000,
+    "coeff_dynamic_range_T2_over_Tmin": "~1.0e+08 (T_s^2 terms)"
+   },
+   {
+    "types_m": 10000,
+    "networks_n": 10,
+    "slack_bits_per_network": 27,
+    "logical_vars": 100280,
+    "dense_clique_per_network": 10028,
+    "logical_couplers": 503203780,
+    "coeff_dynamic_range_T2_over_Tmin": "~1.0e+08 (T_s^2 terms)"
+   }
+  ],
+  "Advantage2_Z12_max_clique_16m-8": 184,
+  "Advantage2_qubits": "4,400+",
+  "Advantage2_couplers": "40,000+"
+ },
+ "F_fractionality_penalty_hessian": "d2/dx2 [beta*x*(1-x)] = -2*beta < 0  (concave for beta>0)"
+}

@@ -1,0 +1,44 @@
+{
+ "lp_integrality": [
+  {
+   "offers": 40,
+   "cardholders": 2000,
+   "cap_k": 3,
+   "exclusive_groups": 7,
+   "binary_vars": 80000,
+   "constraints": 16080,
+   "lp_status": 0,
+   "fractional_entries_in_LP_optimum": 0,
+   "seconds": 1.05
+  },
+  {
+   "offers": 100,
+   "cardholders": 10000,
+   "cap_k": 5,
+   "exclusive_groups": 19,
+   "binary_vars": 1000000,
+   "constraints": 200200,
+   "lp_status": 0,
+   "fractional_entries_in_LP_optimum": 0,
+   "seconds": 21.25
+  },
+  {
+   "offers": 120,
+   "cardholders": 20000,
+   "cap_k": 8,
+   "exclusive_groups": 27,
+   "binary_vars": 2400000,
+   "constraints": 560240,
+   "lp_status": 0,
+   "fractional_entries_in_LP_optimum": 0,
+   "seconds": 70.98
+  }
+ ],
+ "patent_stated_scale": {
+  "offers": 1000,
+  "cardholders": 1000000,
+  "binary_vars": 1000000000,
+  "slack_bits_if_cap_k_le_15": 4000000,
+  "largest_annealer_qubits": "~4,400-5,000"
+ }
+}
